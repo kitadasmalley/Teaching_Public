@@ -1,0 +1,209 @@
+---
+title: 'STAT 441: Introduction to Linear Models'
+output:
+  html_document:
+    toc: true
+    collapsed: false
+    toc_float: true
+    toc_depth: 5
+  pdf_document:
+    toc: true
+    toc_depth: '5'
+---
+
+## Learning Objectives: 
+
+In this lesson students will learn ... 
+
+* The basics of R
+  * Random variable functions built into R
+  * Variable assignment 
+  * How to use simple mathematical functions in R to define relationships
+* Plotting in base R
+* Optional: plotting with ggplot
+
+## Example 1: Creating Linear Relationships
+
+### 1. Variable Assignment 
+
+In R you can use the equals sign `=` or the arrow `<-` to do variable assignment. 
+
+
+### 2. Generating Data in R 
+
+There are several distributions built into base R, from which you can draw values. 
+
+#### Uniform Distribution
+
+Learn about the `runif` function
+
+```{r}
+### HELP
+?runif
+help(runif)
+```
+
+##### Question 
+
+What are the arguments for the `runif` function?  What are the default values?
+
+```{}
+## YOUR NOTES HERE ##
+```
+
+##### Activity
+
+###### Step 1
+
+Generate 100 random numbers from the interval (0,1) and call it `X`
+
+```{r}
+### Generate 100 random numbers from the interval (0,1) and call it X
+
+X<-runif(n=100, min=0, max=1)
+```
+
+Create a histogram to look at the data. 
+
+```{r}
+### Histogram in Base R
+hist(X)
+```
+
+###### Step 2
+
+Generate 100 random numbers from the interval (0,1) and call it W
+
+```{r}
+### Generate 100 random numbers from the interval (0,1) and call it W
+
+W<-runif(n=100, min=0, max=1)
+```
+
+
+###### Step 3
+
+Define Y to be a linear combination of X and W, where 
+$$Y=0.15X + 0.85W$$
+
+```{r}
+### Define Y to be a linear combination of X and W
+
+Y<-0.15*X + 0.85*W
+```
+
+###### Step 4
+
+Make a scatterplot of (X,W)
+
+```{r}
+### SCATTERPLOT IN BASE R
+plot(X, W)
+```
+
+##### Question
+
+How would you describe the relationship between X and W?
+
+```{}
+## YOUR NOTES HERE
+```
+
+###### Step 5
+
+Make a scatterplots of (X, Y) and (W, Y)
+
+```{r}
+### SCATTERPLOTS OF X,Y and W,Y
+plot(X,Y)
+plot(W,Y)
+```
+
+##### Question
+
+Are these plots similar or different? Do you have a hypothesis about why
+they might look different?
+
+```{}
+## YOUR NOTES HERE
+```
+
+
+## Example 2: Linear Models
+
+Consider the following examples of linear models: 
+
+* Simple Linear Regression: $Y=\beta_0+\beta_1 X$
+* Polynomial Regression: $Y=\beta_0+\beta_1 X+ \beta_2 X^2$
+* Log Transformation: $Y=\beta_0+\beta_1 ln(X)$
+* Multiple Linear Regression: $Y=\beta_0+\beta_1 X_1+\beta_2 X_2$
+
+##### Activity
+
+Program examples of the models above and in R. Then create a scatter plot to visualize the
+relationship. Compare and contrast plots.
+
+```{r}
+### SIMPLE LINEAR
+X<-runif(n=100)
+
+### PARAMETERS
+beta0<-.05
+beta1<-.17
+
+### MODEL
+Y<-beta0+beta1*X
+
+### PLOT
+plot(X, Y)
+```
+
+```{r}
+### POLYNOMIAL LINEAR
+X<-runif(n=100)
+
+### PARAMETERS
+beta0<-.05
+beta1<-.17
+beta2<-.14
+
+### MODEL
+Y<-beta0+beta1*X+beta2*X^2
+
+### PLOT
+plot(X, Y)
+```
+
+```{r}
+### LOG TRANSFORMED
+X<-runif(n=100)
+
+### PARAMETERS
+beta0<-.05
+beta1<-.17
+
+### MODEL
+Y<-beta0+beta1*log(X)
+
+### PLOT
+plot(X, Y)
+plot(log(X), Y)
+```
+
+```{r}
+### MULTIPLE
+X1<-runif(n=100)
+X2<-rnorm(n=100)
+
+### PARAMETERS
+beta0<-.05
+beta1<-.17
+beta2<-.16
+
+### MODEL
+Y<-beta0+beta1*X1+beta2*X2
+
+### PLOT
+plot(X1, Y)
+plot(X2, Y)
+```

@@ -1,0 +1,376 @@
+---
+title: 'STAT 441: Introduction to R and Statistics Review'
+output:
+  html_document:
+    toc: true
+    collapsed: false
+    toc_float: true
+    toc_depth: 5
+  pdf_document:
+    toc: true
+    toc_depth: '5'
+---
+
+## Learning Objectives: 
+
+In this lesson students will learn ... 
+
+* The basics of R
+* Plotting in base R
+* Optional: plotting with ggplot
+
+Students will also review important concepts in statistics, such as ...
+
+* Parameters, 
+* Statistics, 
+* Estimation, and 
+* Convergence
+* Important Theorems
+
+
+## 1. Variable Assignment 
+
+In R you can use the equals sign `=` or the arrow `<-` to do variable assignment. 
+
+```{r}
+### CREATE A CONSTANT VARIABLE NAMED "A" 
+### PICK YOUR FAVORITE NUMBER!
+A <- 5
+```
+
+## 2. Distributions in R
+
+There are several distributions built into base R, from which you can draw values. 
+
+### A. Generate  
+
+Let's generate 10 values from `rnorm`. 
+
+```{r}
+### GENERATE 10 VALUES FROM rnorm
+rnorm(n=10)
+```
+
+##### Question
+
+Compare your values with a partner.  Are they the same or different? 
+
+```{}
+## YOUR NOTES HERE ##
+```
+
+### B. Setting A Seed
+
+You may have observed that every time you run the `rnorm` function that it will give you different values.  This is because the "r" in `rnorm` stands for "random" and thereby is a (pseudo) random number generator.  We can set a seed to tell the computer where to start the algorithm.  
+
+```{r}
+### SET A SEED 
+set.seed(441)
+
+### TRY AGAIN 
+### GENERATE 10 VALUES FROM rnorm
+rnorm(n=10)
+```
+
+Setting a seed helps with making your code reproducible!
+
+
+### C. Functions in R and Documentation
+
+Let's take a moment to learn about this function. 
+
+```{r}
+### READ THE DOCUMENTATION FOR THE rnorm
+?rnorm
+help(rnorm)
+```
+
+
+##### Question
+
+What does rnorm do? 
+
+```{}
+## YOUR NOTES HERE ##
+```
+
+
+### D. Arguments
+
+In R we call the function inputs "arguments".  The arguments for the `rnorm` function are: 
+
+* `n`: number of observations 
+* `mean`: center of the distribution
+* `sd`: standard deviation of the distribution (spread)
+
+##### Question
+
+What are the default arguments for `rnorm`?  
+
+BONUS: What is the special name of this distribution? 
+
+```{}
+## YOUR NOTES HERE ##
+```
+
+The normal distribution has two parameters: 
+
+* Mean ($\mu \in \mathbb{R}$)
+* Standard deviation ($\sigma \in \mathbb{R^+}$)
+
+Parameters are numeric values that describe a characteristic of a population.  In the frequentist paradigm, parameters are considered to be fixed and unknown.  
+
+##### Activity
+
+Let's explore this by sampling 100 individuals from a population, where the variable of interest follows a normal distribution with a mean of 4 and a standard deviation of 2.  Since we are going to use this data for later, we will want to store it as a variable named "X". 
+
+```{r}
+### SAMPLE 100
+### MEAN = 4
+### SD = 2
+
+### REMEMBER TO STORE
+X<-rnorm(n=100, mean=4, sd=2)
+```
+
+Look at the data generated with a histogram using the base R graphics function `hist()`. 
+
+```{r}
+### HISTOGRAM
+hist(X)
+```
+
+##### Question
+
+Where does the center of the distribution appear to be? 
+
+```{}
+## YOUR NOTES HERE ##
+```
+
+## 3. Parameters and Statistics
+
+Since parameters are unknown, we try to estimate them by collecting a **sample** of data from the **target population** and calculating **statistics**.  Statistics are simply functions of data.
+
+For instance, the arithmetic mean ($\bar{x}$) is known as the *sample mean* and is used to estimate the population mean ($\mu$).
+
+$$\bar{x}_n=\frac{1}{n}\sum_{i=1}^n x_i$$
+
+##### Activity
+
+Calculate the sample mean of the data generated above. 
+
+```{r}
+### SAMPLE MEAN
+mean(X)
+```
+
+In general, it is desired that estimators be **unbiased**.  An estimator is unbiased if the **expected value** of the estimator is equal to the true value of parameter.  
+
+
+## 4. Important Theorems 
+
+### A. Law of Large Numbers
+
+Simply put, the *Law of Large Numbers* (LLN) states that as the sample size ($n$) increases, 
+
+$$\bar{x}_n \rightarrow \mu, \text{ as } n \rightarrow \infty$$
+##### Activity
+
+Try it out! 
+```{r}
+### SMALLER SAMPLE
+x10<-rnorm(n=10, mean=4, sd=2)
+mean(x10)
+
+### BIGGER SAMPLE
+x500<-rnorm(n=500, mean=4, sd=2)
+mean(x500)
+```
+
+We can do better.  Let's simulate! 
+
+##### Simulation
+
+We can loop this using different sample sizes to observe the Law of Large Numbers (LLN) in action: 
+```{r, warning=FALSE, message=FALSE}
+### LLN
+nsamp<-1:1000
+xBars<-c()
+
+for(i in 1:length(nsamp)){
+  thisSamp<-rnorm(n=nsamp[i], mean=4, sd=2)
+  thisXBar<-mean(thisSamp)
+  
+  ### CONCATINATE! 
+  xBars<-c(xBars, thisXBar)
+}
+
+```
+
+We can visualize this in two ways: (1) Base R graphics and (2) `ggplot`
+
+```{r}
+### BASE R GRAPHICS
+plot(nsamp, xBars)
+abline(h=4, col="red", lty=2, lwd=2)
+```
+
+
+```{r, warning=FALSE, message=FALSE}
+### FIRST: MAKE A DATAFRAME
+llnSim<-data.frame(nsamp, xBars)
+
+### SECOND: GGPLOT
+#install.packages("tidyverse")
+library(tidyverse)
+
+ggplot(data=llnSim, aes(x=nsamp, y=xBars))+
+  geom_line()+
+  geom_hline(yintercept = 4, lwd=2, lty=2, color="red")+
+  theme_bw()
+
+```
+
+
+### B. Central Limit Theorem
+
+The Central Limit Theorem (CLT) is probably the most commonly used theorem in statistics.  It states that as the sample size ($n$) increases, 
+
+$$\bar{x}_n \rightarrow N(\mu,\frac{\sigma}{\sqrt{n}}), \text{ as } n \rightarrow \infty$$ 
+
+regardless of the underlying distribution. 
+
+##### Activity
+
+Step 1: Generate Data 
+
+In order to demonstrate the power of the CLT we will generate data from differently shaped distributions, with the same mean. 
+
+```{r}
+### NORMAL (MEAN=4, SD=2)
+norm<-rnorm(n=500, mean=2, sd=1)
+
+### UNIFORM (MIN=2, MAX=6)
+unif<-runif(n=500, min=1, max=3)
+
+### CHI-SQUARE (DF=4)
+chi<-rchisq(n=500, df=2)
+
+### GRAPHICS IN BASE R
+### PLOT IN ONE ROW
+par(mfrow=c(1,3)) # PLOTS THREE BASE R GRAPHICS IN A ROW
+hist(norm)
+abline(v=4, col="red", lwd=2, lty=2)
+
+hist(unif)
+abline(v=4, col="red", lwd=2, lty=2)
+
+hist(chi)
+abline(v=4, col="red", lwd=2, lty=2)
+
+par(mfrow=c(1,1)) ## RESET BACK TO NORMAL
+```
+
+##### Question
+
+How would you describe the spaces of these distributions? 
+
+```{}
+## YOUR NOTES HERE ##
+```
+
+We can also create a graphic using `ggplot`. 
+
+```{r}
+### GRAPHICS IN GGPLOT
+
+### FIRST MAKE A DATAFRAME
+dist_DF<-data.frame(distribution=c(rep("Normal", 500), 
+                                   rep("Uniform", 500), 
+                                   rep("ChiSq", 500)), 
+                    randData=c(norm, unif, chi))
+
+### GGPLOT WITH FACET
+ggplot(data=dist_DF, aes(x=randData, fill=distribution))+
+  geom_histogram(aes(y=after_stat(density)), bins=10)+
+  facet_wrap(.~distribution, scales="free")
+```
+
+##### Question
+
+What do you notice about how these plots are ordered?  What does this tell you about how are treats categorical variables? 
+
+```{}
+## YOUR NOTES HERE ##
+```
+
+##### Simulation
+
+```{r}
+### SAMPLE SIZES
+nsim<-1000
+nSamps<-c(5, 10, 25, 50, 100)
+
+### CREATE A BLANK MATRIX TO STORE DATA
+normXBar<-matrix(nrow=nsim*length(nSamps),
+                 ncol=4)
+
+unifXBar<-matrix(nrow=nsim*length(nSamps),
+                 ncol=4)
+
+chiXBar<-matrix(nrow=nsim*length(nSamps),
+                 ncol=4)
+
+for(i in 1:length(nSamps)){
+  for(j in 1:nsim){
+    thisNorm<-rnorm(n=nSamps[i], mean=2, sd=1)
+    thisUnif<-runif(n=nSamps[i], min=1, max=3)
+    thisChi<-rchisq(n=nSamps[i], df=2)
+    
+    ### STORE THE SIMULATION DATA
+    row<-j+(i-1)*nsim
+    
+    ### SIMULATION
+    normXBar[row, 1]<-j
+    unifXBar[row, 1]<-j
+    chiXBar[row, 1]<-j
+      
+    ### SAMPLE SIZE
+    normXBar[row, 2]<- nSamps[i]
+    unifXBar[row, 2]<- nSamps[i]
+    chiXBar[row, 2]<- nSamps[i]
+    
+    ### SAMPLE MEAN
+    normXBar[row, 3]<-mean(thisNorm)
+    unifXBar[row, 3]<-mean(thisUnif)
+    chiXBar[row, 3]<-mean(thisChi)
+    
+    ### DISTRIBUTION
+     normXBar[row, 4]<-"Normal"
+    unifXBar[row, 4]<-"Uniform"
+    chiXBar[row, 4]<-"ChiSqr"
+  }
+}
+
+### ROW BIND DATA FROM DIFFERENT DISTRIBUTIONS
+simMat<-rbind(normXBar, unifXBar, chiXBar)
+colnames(simMat)<-c("Sim", "SampSize", "xBar", "Distribution")
+
+### REFORMAT TO DATAFRAME
+simDat<-as.data.frame(simMat)
+
+### COERCE VARIABLES TO NUMERICS
+simDat$SampSize<-as.numeric(simDat$SampSize)
+simDat$xBar<-as.numeric(simDat$xBar)
+
+### GGPLOT
+ggplot(simDat, aes(x=xBar))+
+  geom_histogram()+
+  geom_vline(xintercept = 2, color="red", lty=2, lwd=1)+
+  facet_grid(Distribution~SampSize, scales="free")+
+  theme_bw()
+
+```
+
+
