@@ -1,0 +1,118 @@
+---
+title: 'STAT 441: Application of SLR Estimates'
+output:
+  html_document:
+    toc: true
+    collapsed: false
+    toc_float: true
+    toc_depth: 5
+  pdf_document:
+    toc: true
+    toc_depth: '5'
+---
+
+## Learning Objectives: 
+
+Students will learn how to ...
+
+* Import data into R 
+* Obtain summary statistics in R 
+* Create scatter plots
+* Perform mathematical functions on vectors of data in R (elementwise)
+
+
+### Example 1: Ice Cream 
+
+Last week was hot!!! What refreshing treat do people enjoy on a hot day?  ICE CREAM! 
+As we come to the end of the summer and the cooler weather of the fall, let’s take a look at this fun dataset about ice cream sales and weather. 
+
+These data are provided on github by Guilherme D. F. Silva (guilhermedom)
+The following directions are in base R, but can be done within the tidyverse as well. 
+
+#### Step 1: Import the Data
+
+```{}
+###Import the data
+icecream<-read.csv("PATHWAY HERE",
+                 header=TRUE)
+```
+
+#### Step 2: Look at the Structure of the Data
+
+```{r}
+###Look at the data
+
+## INSERT YOUR CODE HERE ###
+```
+
+#### Step 3: Save Vectors for Response and Explanatory
+
+```{r}
+###Get access to the data set and create variables for easy access later
+## INSERT YOUR CODE HERE ###
+```
+
+#### Step 4: Create a Histogram
+
+```{r}
+### IN BASE
+###Make a histogram of the response variable 
+## INSERT YOUR CODE HERE ###
+
+
+### IN GGPLOT
+library(tidyverse)
+
+## INSERT YOUR CODE HERE ###
+```
+
+
+#### Step 5: Summary Statistics
+
+```{r}
+###Report basic statistics of the response variable 
+## INSERT YOUR CODE HERE ###
+```
+
+#### Step 6: Linear Model in R
+
+```{r}
+###Run a simple linear regression model on shear against age and store the results
+## INSERT YOUR CODE HERE ###
+```
+
+
+#### Step 7: Scatter Plot
+
+```{r}
+####Create a scatterplot
+## BASE
+## INSERT YOUR CODE HERE ###
+####Add the least squares regression line
+## INSERT YOUR CODE HERE ###
+
+## GGPLOT
+## INSERT YOUR CODE HERE ###
+```
+
+#### Step 8: Verify from Scratch 
+
+Use the mathematical equations derived in class to confirm the least squares estimates from lm.
+
+```{r}
+## INSERT YOUR CODE HERE ###
+```
+
+
+### Example 2: Rockets
+
+The rocket data are available here: 
+
+```{r}
+rocket<-read.csv("https://raw.githubusercontent.com/kitadasmalley/Teaching_Public/refs/heads/main/STAT441/FA25/data/rocketProp.csv",
+                 header=TRUE)
+```
+
+
+
+
