@@ -1,0 +1,172 @@
+---
+title: "Minimizing Sum of Squared Residuals"
+output:
+  html_document:
+    code_folding: hide
+runtime: shiny
+---
+
+### Goal:
+
+In linear regression, we define the line of *best* fit, as the line that minimizes the sum of squared residuals, $$SS(Res)=\sum_{i=1}^n (Y_i - \hat{Y}_i)^2$$
+
+where $Y_i$ is the observed response value for the $i^{th}$ individual and $\hat{Y}_i$ is the fitted value for the $i^{th}$ individual based on the model
+
+$$ \hat{Y}_i=\hat{\beta}_0+\hat{\beta}_1 x_i$$
+with estimated values for y-intercept ($\hat{\beta}_0$) and slope ($\hat{\beta}_1$).
+
+### Tip:
+
+It is also known that this line of best fit passed through the point $(\bar{x}, \bar{Y})$. 
+
+### Task:
+
+With this knowledge, move the slider to test different y-intercept values and find the values for slope and intercept that minimize the sum of squared residuals, $SS(Res)=\sum_{i=1}^n (Y_i - \hat{Y}_i)^2$.
+
+```{r echo=FALSE}
+library(tidyverse)
+
+inputPanel(
+         # Input: Slider for the number of bins ----
+            sliderInput(inputId = "yint",
+                        label = "Select the y-intercept:",
+                        min = 0, max = 10,
+                        value = 0, step = 0.5)
+)
+
+textOutput("thisSlope")
+            textOutput("thisSSE")
+            
+renderPlot({
+        
+        set.seed(252)
+        x<-seq(-5, 20, .5)
+        y<-4+0.5*x+rnorm(n=length(x), sd=.5)
+        x_bar<-mean(x)
+        y_bar<-mean(y)
+        
+        simDF<-data.frame(x, y)
+        barDF<-data.frame(x=x_bar, 
+                          y=y_bar)
+        
+        y_ints<-seq(0, 10, 0.5)
+        
+        slopeF<-function(y_int, meanX, meanY){
+            rise<-meanY-y_int
+            run<-meanX
+            rise/run
+        }
+        
+        mse<-c()
+        slope<-c()
+        for(i in 1:length(y_ints)){
+            this_slope<-slopeF(y_ints[i], x_bar, y_bar)
+            
+            fitted<-y_ints[i]+this_slope*x
+            this_mse<-mean((y-fitted)^2)
+            
+            slope<-c(slope, this_slope)
+            mse<-c(mse, this_mse)
+        }
+        
+        optMat<-data.frame(y_ints, slope, mse)
+        
+        thisInt<-data.frame(x=0, 
+                            y=input$yint)
+        
+        p1<-ggplot(data=simDF, aes(x, y))+
+            geom_point()+
+            geom_point(data=barDF, aes(x, y), 
+                       color="red", 
+                       size=4)+
+            geom_point(data=thisInt, aes(x, y), 
+                       color="red",
+                       size=4)+
+            geom_abline(slope=slopeF(input$yint, x_bar, y_bar), 
+                        intercept = input$yint, 
+                        color="red", lty=2)+
+            ylim(c(0, 15))+
+            coord_fixed()+
+            theme_bw()
+        
+        thisPoint<-optMat%>%
+            filter(y_ints==input$yint)
+        
+        thisMin<-min(optMat$mse)
+        
+        p2<-ggplot(optMat, aes(y_ints, mse) )+
+            #geom_vline(xintercept = 4, color="red", lty=2)+
+            #geom_hline(yintercept = thisMin, color="red", lty=2)+
+            geom_point()+
+            geom_point(data=thisPoint, aes(x=y_ints, y=mse),
+                       color="red", size=4)+
+            theme_bw()
+        
+        require(gridExtra)
+        p=grid.arrange(p1, p2, ncol=2,
+                       heights=c(1,1), widths=c(2,1))
+        print(p)
+        
+        
+    })
+    
+     output$thisSlope <- renderText({ 
+        
+        set.seed(252)
+        x<-seq(-5, 20, .5)
+        
+        y<-4+0.5*x+rnorm(n=length(x), sd=.5)
+        x_bar<-mean(x)
+        y_bar<-mean(y)
+        
+        slopeF<-function(y_int, meanX, meanY){
+            rise<-meanY-y_int
+            run<-meanX
+            rise/run
+        }
+        
+        this_slope<-round(slopeF(input$yint, x_bar, y_bar),4)
+        
+        paste("Slope : ", this_slope, sep="")
+    })
+    
+    output$thisSSE <- renderText({ 
+        set.seed(252)
+        x<-seq(-5, 20, .5)
+        
+        y<-4+0.5*x+rnorm(n=length(x), sd=.5)
+        x_bar<-mean(x)
+        y_bar<-mean(y)
+        
+        slopeF<-function(y_int, meanX, meanY){
+            rise<-meanY-y_int
+            run<-meanX
+            rise/run
+        }
+        
+        this_slope<-round(slopeF(input$yint, x_bar, y_bar),4)
+        
+        fitted<-input$yint+this_slope*x
+        this_sse<-round(sum((y-fitted)^2),4)
+        
+        paste("SSE : ", this_sse, sep="")
+    })
+```
+
+### Behind the App: 
+
+These data are generated with the following process
+
+```{r}
+  set.seed(252)
+  x<-seq(-5, 20, .5)
+  y<-4+0.5*x+rnorm(n=length(x), sd=.5)
+```
+
+How well did you do? Where you able to find the estimate values? 
+
+```{r, class.source = "fold-hide", collapse = TRUE}
+mod<-lm(y~x)
+summary(mod)
+```
+
