@@ -1,0 +1,176 @@
+---
+title: 'STAT 441: Random Variables and Distributions in R'
+output:
+  html_document:
+    toc: true
+    collapsed: false
+    toc_float: true
+    toc_depth: 5
+  pdf_document:
+    toc: true
+    toc_depth: '5'
+---
+
+## Learning Objectives: 
+
+Students will learn how to ...
+
+* Generate random variables in R from the normal and multivariate normal distributions 
+* Calculate probabilities 
+* Visualize densities
+
+
+### Example 1: Normal Distribution
+
+R has several built-in functions for known distributions.  Let’s learn a little bit more about them!
+
+For this example please use the `rnorm()` function.  To learn about the arguments that this function takes you can type `?rnorm` to read the help file. 
+
+#### Step 1: Generate
+
+Generate 10000 observations from the Normal distribution using the defaults in the rnorm function. 
+
+```{r}
+### GENERATE
+
+## INSERT CODE HERE ##
+```
+
+#### Step 2: Visualize
+
+
+Create a plot that estimates the density based on these data
+
+```{r warning=FALSE, message=FALSE}
+### PLOT DENSITY
+
+## BASE
+
+## INSERT CODE HERE ##
+
+## GGPLOT
+library(tidyverse)
+
+
+## INSERT CODE HERE ##
+```
+
+
+#### Step 3: Density
+
+We can find the height
+
+```{r}
+### DENSITY AT 0
+
+## INSERT CODE HERE ##
+```
+
+#### Step 4: Probability 
+
+We can evaluate the area under the curve (to the left) 
+
+```{r}
+### PROBABILITY
+
+## INSERT CODE HERE ##
+```
+
+#### Question: 
+
+What observations do you have about the normal distribution based on your answers above? 
+
+
+### Example 2: Multivariate Normal Distribution
+
+#### Step 1A: Generate Correlated Data
+
+Generate 10000 observations from the Normal distribution using the defaults in the rnorm function. 
+
+```{r}
+### MULTIVARIATE
+#install.packages("MASS")
+library(MASS)
+
+## GENERATE
+
+## INSERT CODE HERE ##
+```
+
+
+#### Step 1B: Kernel Density
+
+```{r}
+### TWO-DIM KERNEL DENSITY
+### n=50 GRID
+
+
+## INSERT CODE HERE ##
+```
+
+#### Step 2: Visualize Correlation
+
+Plots built into base R: 
+
+```{r}
+### PLOT (SCATTER)
+
+## INSERT CODE HERE ##
+
+### CONTOUR
+
+## INSERT CODE HERE ##
+
+### HEATMAP
+
+## INSERT CODE HERE ##
+
+### PERSPECTIVE
+
+## INSERT CODE HERE ##
+```
+
+#### Step 3A: Generate Independent Data
+
+Generate data from the multivariate normal distribution that has zero correlation 
+
+```{r}
+## ZERO CORR 
+
+## INSERT CODE HERE ##
+```
+
+
+#### Step 3B: Kernel Density
+
+```{r}
+### ESTIMATED DENSITY
+
+## INSERT CODE HERE ##
+```
+
+#### Step 4: Visualize Independence
+
+Plots built into base R: 
+
+```{r}
+### PLOT (SCATTER)
+
+## INSERT CODE HERE ##
+
+### CONTOUR
+
+## INSERT CODE HERE ##
+
+### HEATMAP
+
+## INSERT CODE HERE ##
+
+### PERSPECTIVE
+
+## INSERT CODE HERE ##
+```
+
+#### Question: 
+
+Compare the sets of plots.  What do you observe? 
