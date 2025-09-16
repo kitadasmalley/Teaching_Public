@@ -1,0 +1,95 @@
+---
+title: 'STAT 441: Useful Distributions'
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '5'
+  html_document:
+    toc: true
+    collapsed: false
+    toc_float: true
+    toc_depth: 5
+---
+
+### Learning Objectives 
+
+Students will learn about ...
+
+* Useful distributions for regression including 
+  * Normal Distribution 
+  * Chi-squared Distribution
+  * T-Distribution 
+  * F-Distribution 
+  
+### Normal Distribution 
+
+The normal distribution is the most popular/common distribution because it has really nice theoretical properties.  We will explore this more in the following weeks as we prove properties of our regression estimators and build up to inference. 
+
+
+A *normal* random variable, $X \sim N(\mu, \sigma^2)$ has the probability density function 
+
+$$f(x)=\frac{1}{\sqrt{2 \pi \sigma^2}}e^{-\frac{1}{2\sigma^2}(x-\mu)^2}, -\infty<x<\infty$$
+
+#### Standard Normal Distribution 
+
+Let a random variable $X$ be normally distributed with mean $\mu$ and variance $\sigma^2$.  Then $Z=\frac{X-\mu}{\sigma}$ has a Standard Normal distribution. 
+
+$$Z=\frac{X-\mu}{\sigma} \sim N(\mu=0, \sigma^2=1)$$
+This process is known as standardizing. 
+
+##### R Example: 
+
+Step 1: Generate
+
+```{r}
+## GENERATE 500 FROM NORMAL
+## MEAN = 9 
+## SD = 2 --> VAR = 4
+## INSERT CODE HERE ###
+```
+
+
+Step 2: Visualize and Summary Statistics
+
+```{r}
+## HISTOGRAM
+## INSERT CODE HERE ###
+
+## SUMMARY STATS
+## INSERT CODE HERE ###
+```
+
+Step 3: Standardize 
+
+```{r}
+## STANDARDIZE
+## INSERT CODE HERE ###
+```
+
+
+BONUS: 
+
+```{r}
+## INSERT CODE HERE ###
+```
+
+### Chi-Squared
+
+```{r}
+
+```
+
+
+### Student's T-Distribution 
+
+```{r}
+
+```
+
+
+### F-Distribution
+
+```{r}
+
+```
+
