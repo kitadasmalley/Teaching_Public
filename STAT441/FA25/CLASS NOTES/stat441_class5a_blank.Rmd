@@ -1,0 +1,226 @@
+---
+title: 'STAT 441: Inference for Slope'
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '5'
+  html_document:
+    toc: true
+    collapsed: false
+    toc_float: true
+    toc_depth: 5
+---
+
+### Learning Objectives 
+
+Students will learn how to ...
+
+* Estimate $\sigma^2$, the nuisance parameter
+* Constructing a test statistic for the slope
+* Perform a hypothesis test for the slope
+* Calculate p-values for the slope
+* Construct a confidence interval for the slope
+  
+### Motivating Example: Egg Production 
+
+Egg shortages have been a hot topic on the news over the past couple years.
+
+These data were part of TidyTuesday, with the following documentation here: 
+<https://github.com/rfordatascience/tidytuesday/blob/main/data/2023/2023-04-11/readme.md> 
+
+The github states that these data come from  The Humane League's US Egg Production dataset by Samara Mendez.  These data are based on reports from the United States Department of Agriculture (USDA). 
+
+### 1. Loading the Data
+
+```{r}
+## LOADING DATA FROM GITHUB
+eggproduction  <- read.csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2023/2023-04-11/egg-production.csv')
+
+```
+
+### 2. Explore the Variables: Which came first the chicken or the egg? 
+
+```{r}
+## STRUCTURE
+str(eggproduction)
+```
+### 3. Wrangle and Visualize the Data 
+
+Suppose we are interested in the exploring the relationship between the number of hen and the number of eggs produced.  Since these are eggs for table eggs for commercial reasons, we can assume that hen is the explanatory variable. 
+
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+
+### WRANGE
+tableEggs<-eggproduction%>%
+  filter(prod_process=="all")%>%
+  filter(prod_type =="table eggs")
+```
+
+Let's visualize the relationship. 
+
+```{r}
+### VIZ
+ggplot(data=tableEggs, aes(x=n_hens, y=n_eggs))+
+  geom_point()
+```
+### 4. Fitting the Model
+
+Fit the model using the linear model function. 
+
+```{r}
+## LM 
+mod<-lm(n_eggs~n_hens, data=tableEggs)
+
+summary(mod)
+```
+
+### 5. Verify Inference for Slope
+
+#### A. Estimating the Variability
+
+The distribution of the slope estimator takes the form 
+
+$$\hat{\beta}_1 \sim N(\beta_1, \frac{\sigma^2}{\sum_{i=1}^n(x_i-\bar{x})^2})$$
+
+Since we don't know $\sigma^2$ we will have to estimate that with 
+
+$$s^2 = \frac{1}{n-2}\sum_{i=1}^n (Y_i-\hat{Y}_i)^2$$ 
+
+Which is also known at the mean squared error (or mean squared residual)
+
+$$MS(Res)=\frac{SS(Res)}{n-2}=\frac{\sum_{i=1}^n (Y_i-\hat{Y}_i)^2}{n-2}$$
+
+Let's calculate!
+
+##### I. $SS(Res)$
+
+```{r}
+### STORE THE VALUES 
+beta0_hat<-mod$coefficients[1]
+beta1_hat<-mod$coefficients[2]
+
+x_obs<-tableEggs$n_hens
+y_obs<-tableEggs$n_eggs
+n<-length(x_obs)
+
+### FITTED VALUES
+#y_hat<- ##INSERT CODE HERE##
+
+### RESIDUALS 
+#res<-##INSERT CODE HERE##
+#head(res)
+
+### SS(RES)
+#ss_res<-##INSERT CODE HERE##
+```
+
+
+##### II. $MS(Res)$
+
+We can use $MS(Res)$ to estimate $s^2$. 
+
+```{r}
+### MS(RES)
+#s2<-##INSERT CODE HERE##
+
+```
+
+##### III. Standard Error
+
+Take the squareroot of $s^2$. 
+
+```{r}
+### STANDARD ERROR
+##INSERT CODE HERE##
+```
+
+#### B. Test Statistic
+
+Hypothesis testing refers to the formal process of calculating the probability of observing the data we did against a hypothesized distribution.
+
+We encapssolate the information about the data we observed in the **test statistic**.  
+
+$$t=\frac{\hat{\beta}_1-\beta_{1,0}}{\sqrt{s^2/\sum_{i=1}^n (x_i-\bar{x})^2}}$$
+
+If we wish to test for the significance of using the explanatory variable ($x$) to determine the response ($Y$), then we set $\beta_{1,0}=0$
+
+
+What is the test statistic for the slope in our example? 
+
+```{r}
+### TEST STAT
+#test_stat<-##INSERT CODE HERE##
+
+
+### SE_beta1
+#se_beta1<-##INSERT CODE HERE##
+```
+
+
+#### C. Hypotheses and P-values
+
+Hypothesis testing use two hypotheses, the null hypothesis and the alternative. 
+
+We test the significance of the slope value against the null hypothesized value of zero. 
+
+$$H_0: \beta_1 = \beta_{1,0} = 0$$
+The alternative hypothesis states that directions we are interested in exploring: 
+
+* One-side Upper: $H_A: \beta_1 > 0$
+* One-side Lower: $H_A: \beta_1 < 0$
+* Two-sided: $H_A: \beta_1 \neq 0$
+
+Since the reference distribution for our test statistics follows a **t-distribution** with $n-2$ degrees of freedom, we can use it to calculate the p-value.   
+
+##### I. One-side Upper P-value
+
+The p-value for a one-sided upper test, is the area to the right of the test statistic. 
+
+```{r}
+### UPPER P-VAL
+##INSERT CODE HERE##
+```
+
+##### II. One-side Lower P-value
+
+The p-value for a one-sided lower test, is the area to the left of the test statistic. 
+
+```{r}
+### LOWER P-VAL
+##INSERT CODE HERE##
+```
+
+
+##### III. Two-sided
+
+The p-value for a two-sided test, is the area to the right of the absolute value of the test statistic times two, by symmetry. 
+
+```{r}
+### TWO SIDED
+##INSERT CODE HERE##
+```
+
+
+#### D. Confidence Interval
+
+Confidence intervals are used when we wish to perform estimation.  They provide a range of values that the parameter may be in, given the sample data observed.  
+
+Technically speaking, a $100\times (1-\alpha)$ level confidence interval means that if we were to repeat the process collecting data and computing confidence intervals, $100\times (1-\alpha)\%$ of the time.  
+
+A confidence interval for the slope is given by
+
+$$\hat{\beta}_1 \pm t_{n-2, \alpha/2} \times SE(\hat{\beta}_1)$$
+
+where $t_{n-2, \alpha/2}$ is the top $(100\times \alpha/2)^{th}$ percentile of Student's t-distribution.
+
+```{r}
+### CONFIDENCE INTERVAL
+alpha<-0.05
+
+##INSERT CODE HERE##
+
+## CHECK
+#confint(mod)
+```
+
