@@ -1,0 +1,229 @@
+---
+title: 'STAT 441: Confidence and Prediction Intervals'
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '5'
+  html_document:
+    toc: true
+    collapsed: false
+    toc_float: true
+    toc_depth: 5
+---
+
+### Learning Objectives 
+
+Students will learn how to ...
+
+* Construct a confidence interval for the slope
+* Construct a confidence interval for a mean response
+* Construct a prediction interval for a new response
+  
+### Motivating Example: Egg Production 
+
+Egg shortages have been a hot topic on the news over the past couple years.
+
+These data were part of TidyTuesday, with the following documentation here: 
+<https://github.com/rfordatascience/tidytuesday/blob/main/data/2023/2023-04-11/readme.md> 
+
+The github states that these data come from  The Humane League's US Egg Production dataset by Samara Mendez.  These data are based on reports from the United States Department of Agriculture (USDA). 
+
+### 1. Loading the Data
+
+```{r}
+## LOADING DATA FROM GITHUB
+eggproduction  <- read.csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2023/2023-04-11/egg-production.csv')
+
+library(tidyverse)
+
+### WRANGLE
+tableEggs<-eggproduction%>%
+  filter(prod_process=="all")%>%
+  filter(prod_type =="table eggs")
+```
+
+### 2. Fit a Simple Linear Model
+
+```{r}
+## LM 
+mod<-lm(n_eggs~n_hens, data=tableEggs)
+
+summary(mod)
+```
+
+#### Estimators 
+
+```{r}
+### STORE THE VALUES 
+beta0_hat<-mod$coefficients[1]
+beta1_hat<-mod$coefficients[2]
+
+x_obs<-tableEggs$n_hens
+y_obs<-tableEggs$n_eggs
+n<-length(x_obs)
+
+### FITTED VALUES
+y_hat<-beta0_hat+beta1_hat*x_obs
+
+### RESIDUALS 
+res<-y_obs-y_hat
+#head(res)
+
+### SS(RES)
+ss_res<-sum(res^2)
+
+### MS(RES)
+s2<-ss_res/(n-2)
+
+### SE_beta1
+se_beta1<-sqrt(s2/sum((x_obs-mean(x_obs))^2))
+```
+
+
+### 3. Confidence Interval for Slope
+
+
+Confidence intervals are used when we wish to perform estimation.  They provide a range of values that the parameter may be in, given the sample data observed.  
+
+Technically speaking, a $100\times (1-\alpha)$ level confidence interval means that if we were to repeat the process collecting data and computing confidence intervals, $100\times (1-\alpha)\%$ of the time.  
+
+A confidence interval for the slope is given by
+
+$$\hat{\beta}_1 \pm t_{n-2, \alpha/2} \times SE(\hat{\beta}_1)$$
+
+where $t_{n-2, \alpha/2}$ is the top $(100\times \alpha/2)^{th}$ percentile of Student's t-distribution.
+
+```{r}
+### CONFIDENCE INTERVAL
+alpha<-0.05
+
+## INSERT CODE HERE ##
+
+```
+
+#### CHECK
+
+```{r}
+## CHECK
+## INSERT CODE HERE ##
+```
+
+### 4. Single Fitted/Predicted Value
+
+
+
+```{r}
+## RANGE of X
+#summary(eggproduction$n_hens)
+
+# create a new data object using the name of the x variable 
+# evaluate at n_hens=320000000
+## INSERT CODE HERE ##
+
+# use the predict function to evaluate the fitted equation at x
+## INSERT CODE HERE ##
+
+```
+
+#### VERIFY
+
+```{r}
+### CHECK
+## INSERT CODE HERE ##
+```
+
+### 5. Confidence Interval for Mean Response
+
+Distribution for Mean Response: 
+
+$$Y_0 = \hat{\beta}_0+\hat{\beta}_0x_0\sim Normal(\beta_0+\beta_1 x_0, [\frac{1}{n}+\frac{(x_0-\bar{x})^2}{\sum_{i=1}^n (x_i-\bar{x})^2}]\sigma^2)$$  
+
+Confidence Interval for Mean Response: 
+
+$$(\hat{\beta}_0+\hat{\beta}_0x_0) \pm t_{n-2, 1-\alpha/2} \times \sqrt{s^2[\frac{1}{n}+\frac{(x_0-\bar{x})^2}{\sum_{i=1}^n (x_i-\bar{x})^2}]}$$
+
+```{r}
+### CONFIDENCE INTERVAL FOR MEAN RESPONSE
+# confidence interval for n_hens=320000000
+## INSERT CODE HERE ##
+
+```
+
+#### VERIFY
+
+```{r}
+### CONFIDENCE INTERVAL FOR MEAN RESP
+### SE for MEAN RESP
+#x0<-## INSERT CODE HERE ##
+#se_mean_x0<-## INSERT CODE HERE ##
+
+### PUT TOGETHER
+## INSERT CODE HERE ##
+```
+
+
+### 6. Prediction Interval for New Response
+
+Distribution for New Response: 
+
+$$\hat{Y}(x_0) = \hat{\beta}_0+\hat{\beta}_0x_0\sim Normal(\beta_0+\beta_1 x_0, [1+\frac{1}{n}+\frac{(x_0-\bar{x})^2}{\sum_{i=1}^n (x_i-\bar{x})^2}]\sigma^2)$$  
+
+Confidence Interval for New Response: 
+
+$$(\hat{\beta}_0+\hat{\beta}_0x_0) \pm t_{n-2, 1-\alpha/2} \times \sqrt{s^2[1+\frac{1}{n}+\frac{(x_0-\bar{x})^2}{\sum_{i=1}^n (x_i-\bar{x})^2}]}$$
+
+```{r}
+### PREDICTION INTERVAL FOR NEW RESPONSE
+# prediction interval for n_hens=320000000
+## INSERT CODE HERE ##
+
+```
+
+#### VERIFY 
+
+```{r}
+### PREDICTION INTERVAL FOR NEW RESP
+### SE for MEAN RESP
+#x0<-## INSERT CODE HERE ##
+#se_new_x0<-## INSERT CODE HERE ##
+
+### PUT TOGETHER
+## INSERT CODE HERE ##
+```
+
+
+What do you notice about the relationship of these two intervals? 
+
+### 7. Plotting Together
+
+```{}
+library(tidyverse)
+
+# create confidence intervals for each x val in the data
+confBand<-predict(mod, interval="confidence")
+
+# create prediction intervals for each x val in the data
+predBand<-predict(mod, interval="predict")
+
+# rename cols in predBand to be unique from confBand
+colnames(predBand)<-c("fit2", "lwr2", "upr2")
+
+# create a new dataframe with the data and new bands
+newDF<-cbind(tableEggs, confBand, predBand)
+
+# use tidyverse to make graphic of bands
+# install.packages(“tidyverse”)
+library(tidyverse)
+
+ggplot(newDF, aes(x=n_hens, y=n_eggs))+
+  geom_point()+
+  geom_abline(slope=mod$coefficients[2], intercept=mod$coefficients[1],color="blue", lty=2, lwd=1)+
+  geom_line(aes(y=lwr), color="green", lty=2, lwd=1)+
+  geom_line(aes(y=upr), color="green", lty=2, lwd=1)+
+  geom_line(aes(y=lwr2), color="red", lty=2, lwd=1)+
+  geom_line(aes(y=upr2), color="red", lty=2, lwd=1)+
+  theme_bw()+
+  geom_vline(xintercept = 320000000, lty=2)
+
+```
+
