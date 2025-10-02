@@ -1,0 +1,66 @@
+---
+title: 'STAT 441: Midterm 1'
+author: "NAME HERE"
+date: "DATE"
+output: pdf_document
+---
+
+## Application in R
+
+For this part of the exam you will need to use the fruitohms dataset in the DAAG package.  A data frame with 128 observations on apparent juice content (percent) and electrical resistance (in ohms). 
+
+### Description in R: Electrical Resistance of Kiwi Fruit 
+
+Data are from a study that examined how the electrical resistance of a slab of kiwifruit changed with the apparent juice content.
+
+### Access the Data
+
+```{r}
+# Import the package
+install.packages("DAAG")
+library(DAAG)
+
+# Load in the data
+data("fruitohms")
+
+# Learn about the data
+?fruitohms
+
+```
+
+### Part A: Variable (5 points)
+
+Identity the explanatory variable and the response variable for this study. 
+
+
+### Part B: Visualize (5 points)
+
+Use R to create a scatter plot of the two variables.  Examine the scatter plot and verbally describe the overall relationship (linear or nonlinear, positive or negative).
+
+```{r}
+### INSERT CODE HERE ###
+```
+
+### Part C: Model (5 points)
+
+Create a simple linear model and add the least squares regression line to the scatter plot.  What is the equation of the line? 
+
+### Part D: Interpret (2 points)
+
+Interpret the slope in the context of these data. 
+
+### Part E: Hypothesis Testing (5 points)
+
+Perform a hypothesis test for the slope.  Provide a five part conclusion for the hypothesis test for slope using the summary model output. 
+
+```{r}
+### MODEL SUMMARY
+
+## INSERT CODE HERE ##
+```
+
+
+### Part F: Critical Thinking (3 points)
+
+Would you trust this model, given your observations in Part B?
+
