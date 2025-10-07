@@ -1,0 +1,235 @@
+---
+title: 'STAT 441: Analysis of Variance'
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '5'
+  html_document:
+    toc: true
+    collapsed: false
+    toc_float: true
+    toc_depth: 5
+---
+
+### Learning Objectives 
+
+Students will learn how to ...
+
+* Construct confidence interval for $\sigma^2$
+* Perform ANOVA F-test
+  
+### Motivating Example: Egg Production 
+
+Egg shortages have been a hot topic on the news over the past couple years.
+
+These data were part of TidyTuesday, with the following documentation here: 
+<https://github.com/rfordatascience/tidytuesday/blob/main/data/2023/2023-04-11/readme.md> 
+
+The github states that these data come from  The Humane League's US Egg Production dataset by Samara Mendez.  These data are based on reports from the United States Department of Agriculture (USDA). 
+
+### 1. Loading the Data
+
+```{r}
+## LOADING DATA FROM GITHUB
+eggproduction  <- read.csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2023/2023-04-11/egg-production.csv')
+
+```
+
+### 2. Wrangle and Visualize the Data 
+
+Suppose we are interested in the exploring the relationship between the number of hen and the number of eggs produced.  Since these are eggs for table eggs for commercial reasons, we can assume that hen is the explanatory variable. 
+
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+
+### WRANGE
+tableEggs<-eggproduction%>%
+  filter(prod_process=="all")%>%
+  filter(prod_type =="table eggs")
+```
+
+Let's visualize the relationship. 
+
+```{r}
+### VIZ
+ggplot(data=tableEggs, aes(x=n_hens, y=n_eggs))+
+  geom_point()
+```
+
+### 3. Fitting the Model
+
+Fit the model using the linear model function. 
+
+```{r}
+## LM 
+mod<-lm(n_eggs~n_hens, data=tableEggs)
+
+summary(mod)
+```
+
+### 4.Estimating Variance
+
+
+Since we don't know $\sigma^2$ we will have to estimate that with 
+
+$$s^2 = \frac{1}{n-2}\sum_{i=1}^n (Y_i-\hat{Y}_i)^2$$ 
+
+Which is also known at the mean squared error (or mean squared residual)
+
+$$MS(Res)=\frac{SS(Res)}{n-2}=\frac{\sum_{i=1}^n (Y_i-\hat{Y}_i)^2}{n-2}$$
+
+Let's calculate!
+
+#### I. $SS(Res)$
+
+```{r}
+### STORE THE VALUES 
+beta0_hat<-mod$coefficients[1]
+beta1_hat<-mod$coefficients[2]
+
+x_obs<-tableEggs$n_hens
+y_obs<-tableEggs$n_eggs
+n<-length(x_obs)
+
+### FITTED VALUES
+y_hat<-beta0_hat+beta1_hat*x_obs
+
+### RESIDUALS 
+res<-y_obs-y_hat
+#head(res)
+
+### SS(RES)
+ss_res<-sum(res^2)
+```
+
+
+#### II. $MS(Res)$
+
+We can use $MS(Res)$ to estimate $s^2$. 
+
+```{r}
+### MS(RES)
+s2<-ss_res/(n-2)
+s2
+```
+
+#### III. Confidence Interval
+
+Since $SS(Res)/\sigma^2 \sim \chi_{df=n-2}^2$ we use quantiles from the Chi-squared distribution with $n-2$ degrees of freedom when constructing the confidence interval for $\sigma^2$: 
+
+$$[\frac{SS(Res)}{\chi_{df=n-2, 1-\alpha/2}^2}, \frac{SS(Res)}{\chi_{df=n-2, \alpha/2}^2}]$$
+
+```{r}
+### CHI-SQUARED Distribution
+df_slr<-n-2
+
+## SUPPORT 
+x_supp <- seq(0, 100, 0.01)
+chisq_d <- data.frame(x = x_supp, y = dchisq(x_supp, df=df_slr))
+
+## PLOT
+ggplot(chisq_d, aes(x = x, y = y)) +
+  # Draw the full distribution curve
+  geom_line(color = "black") 
+
+```
+
+Quantiles: 
+
+```{r}
+## CHI-SQUARED QUANTILES
+sqMin<-qchisq(0.025, df=df_slr)
+sqMin
+sqMax<-qchisq(0.975, df=df_slr)
+sqMax
+
+## SHADE
+shade1 <- subset(chisq_d, x <= sqMin )
+shade2 <- subset(chisq_d, x >= sqMax )
+
+## SHADE DISTR
+ggplot(chisq_d, aes(x = x, y = y)) +
+  # Draw the full distribution curve
+  geom_line(color = "black") +
+  # Add the shaded area using geom_ribbon()
+  geom_ribbon(data = shade1, aes(xmin=0, xmax=x, ymin=0, ymax=y), fill = "skyblue", alpha = 0.6)+
+   geom_ribbon(data = shade2, aes(xmin=x, xmax=100, ymin=0, ymax=y), fill = "skyblue", alpha = 0.6)+
+  geom_vline(xintercept = df_slr, lty=2)
+
+```
+
+Interval: 
+
+```{r}
+## CONFIDENCE INTERVAL FOR SIGMA^2
+## INSERT CODE HERE ##
+
+## INSERT CODE HERE ##
+```
+
+### 5.Analysis of Variance
+
+Analysis of Variance (aka ANOVA) is used to test the overall significance of the model.  The following in the simple linear regression (SLR) application of ANOVA, but we will extend this further when we move to multiple linear regression (MLR).
+
+```{r}
+## ANOVA
+## INSERT CODE HERE ##
+```
+#### A. Sum of Squares
+
+##### I. Total Sum of Squares
+
+$$SS(Total)=\sum_{i=1}^n (Y_i-\bar{Y})^2$$
+
+```{r}
+yi<-tableEggs$n_eggs
+### TOTAL SUM OF SQUARES
+#ssTot<-## INSERT CODE HERE ##
+```
+
+##### II. Residual Sum of Squares
+
+$$SS(Res)=\sum_{i=1}^n (Y_i-\hat{Y}_i)^2$$
+
+```{r}
+fit<-mod$fitted.values
+
+### RESIDUAL SUM OF SQUARES
+## INSERT CODE HERE ##
+```
+
+##### III. Regression Sum of Squares
+
+$$SS(Reg)=\sum_{i=1}^n (\hat{Y}_i-\bar{Y})^2$$
+
+```{r}
+
+### REGRESSION SUM OF SQUARES
+## INSERT CODE HERE ##
+```
+
+##### IV. R-Squared
+
+$$R^2=\frac{SS(Reg)}{SS(Tot)}$$
+```{r}
+## INSERT CODE HERE ##
+```
+
+#### F-Value 
+
+$$F=\frac{MS(Reg)}{MS(Res)}$$
+
+```{r}
+## MS(Reg)
+## INSERT CODE HERE ##
+
+## MS(Res)
+## INSERT CODE HERE ##
+
+## F
+## INSERT CODE HERE ##
+
+## Pva
+## INSERT CODE HERE ##
+```
+
