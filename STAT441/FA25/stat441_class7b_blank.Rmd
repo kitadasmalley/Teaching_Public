@@ -1,0 +1,249 @@
+---
+title: 'STAT 441: Residual Analysis'
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '5'
+  html_document:
+    toc: true
+    collapsed: false
+    toc_float: true
+    toc_depth: 5
+---
+
+### Learning Objectives 
+
+Students will learn how to ...
+
+* Construct diagnostic plots to explore model assumptions using residuals
+  
+
+### I. Motivating Activity: Anscombe's Quartet
+
+#### 1) Load in the data
+
+```{r}
+data("anscombe")
+str(anscombe)
+```
+
+#### 2) Directions
+
+If your birthday is: 
+
+* January - March: Use variables `x1` and `y1`
+* April - June: Use variables `x2` and `y2`
+* July - September: Use variables `x3` and `y3`
+* October - December: Use variables `x4` and `y4`
+
+Complete the following tasks: 
+
+* Calculate the mean and standard deviation for both your `x` and `y` variables
+* Calculate the correlation coefficient
+* Compare the information you have obtained with your neighbor
+
+```{r}
+### INSERT CODE HERE ###
+```
+
+
+#### 3) Line of Best Fit
+
+```{r}
+# Y~X
+### INSERT CODE HERE ###
+```
+
+
+#### 4) Graph Your Data
+
+```{r}
+library(tidyverse)
+
+### INSERT CODE HERE ###
+```
+
+#### EXTRA COOL
+
+Check out the Dinosaur Dozen!
+
+```{r}
+#install.packages("datasauRus")
+
+library("ggplot2")
+library("datasauRus")
+ggplot(datasaurus_dozen, aes(x = x, y = y, colour = dataset))+
+  geom_point() +
+  theme_void() +
+  theme(legend.position = "none")+
+  facet_wrap(~dataset, ncol = 4)
+```
+
+### II. Diagnostic Plots
+
+#### A. Residual Plot
+
+Compare the residuals vs the explanatory values. 
+
+##### Example 1: Anscombe
+
+Use data from Anscombe's Quartet for Group 1
+
+```{r}
+### GROUP 1
+mod1<-lm(y1~x1, data=anscombe)
+
+### INSERT CODE HERE ###
+# try adding a geom_smooth layer
+
+```
+
+##### Example 2: Fruit Ohms
+
+These data come from the DAAG package and explore the electrical resistance of kiwi fruit.
+
+```{r}
+### FRUITOHMS
+library(DAAG)
+
+# Load in the data
+data("fruitohms")
+
+modKiwi<-lm(ohms~juice, data=fruitohms)
+
+ggplot(fruitohms, aes(juice, y=modKiwi$residuals))+
+  geom_point()+
+  geom_hline(yintercept = 0, color="red", lty=2, lwd=1)+
+  theme_bw()#+
+  #geom_smooth()
+
+# try adding a geom_smooth layer
+
+```
+
+
+##### Example 3: GPAs
+
+These data come from the Stat2Data package and compare the High School and College GPAs.
+
+```{r}
+#install.packages("Stat2Data")
+library(Stat2Data)
+data("FirstYearGPA")
+
+## PLOT
+ggplot(data=FirstYearGPA, aes(x=HSGPA, y=GPA))+
+  geom_point()+
+  geom_smooth(method="lm")
+
+## MOD
+modGPA<-lm(GPA~HSGPA, data=FirstYearGPA)
+
+### RESID
+ggplot(FirstYearGPA, aes(HSGPA, y=modGPA$residuals))+
+  geom_point()+
+  geom_hline(yintercept = 0, color="red", lty=2, lwd=1)+
+  theme_bw()
+```
+
+
+#### B. Quantile-Quantile Plot
+
+##### I) Theoretic standard
+
+Generate data from a normal distribution.
+
+```{r}
+## NORMAL
+normDat<-rnorm(10000)
+hist(normDat)
+qqnorm(normDat)
+qqline(normDat)
+```
+
+##### II) Fat tails
+
+Generate data from a t distribution with fatter tails.
+
+```{r}
+## T
+tDat<-rt(10000, df=5)
+hist(tDat)
+qqnorm(tDat)
+qqline(tDat)
+
+```
+
+##### III) Right Skew
+
+Generate data from a chi-squared distribution (right skew).
+
+```{r}
+## CHI-SQ
+chisqDat<-rchisq(10000, df=2)
+hist(chisqDat)
+qqnorm(chisqDat)
+qqline(chisqDat)
+
+```
+
+##### IV) Left Skew
+
+Generate data from a negative chi-squared distribution (left skew).
+
+```{r}
+## NEG CHI SQ
+nchisqDat<-(-1)*rchisq(10000, df=2)
+hist(nchisqDat)
+qqnorm(nchisqDat)
+qqline(nchisqDat)
+
+```
+
+##### OUR EXAMPLE
+
+Our qqplot:
+
+```{r}
+### GROUP 1
+qqnorm(mod1$residuals)
+qqline(mod1$residuals)
+
+```
+
+
+#### C. Leverage vs Residual Plot
+
+```{r}
+#Design Matrix
+xMat<-matrix(c(rep(1, 11),
+               anscombe$x1), nrow=11)
+#xMat
+
+# Projection Matrix
+hMat<-xMat%*%solve(t(xMat)%*%xMat)%*%t(xMat)
+#hMat
+
+# Leverage
+diag(hMat)
+```
+
+### Try it! 
+
+Try this for x3
+
+```{r}
+## TRY THIS FOR x3
+#Design Matrix
+### INSERT CODE HERE ###
+```
+
+#### D. Cook's Distance
+
+Create plots for model diagnostics: 
+
+```{r}
+### FOUR PLOTS
+### INSERT CODE HERE ###
+```
+
