@@ -1,0 +1,124 @@
+---
+title: 'STAT 441: Linear Algebra in R'
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '5'
+  html_document:
+    toc: true
+    collapsed: false
+    toc_float: true
+    toc_depth: 5
+---
+
+### Learning Objectives 
+
+Students will learn how to ...
+
+* Construct diagnostic plots to explore model assumptions using residuals
+  
+
+
+
+### A. Import the Data 
+
+These data are from Open Intro.  
+
+Documentation in R: 
+
+Zagat is a public survey where anyone can provide scores to a restaurant. The scores from the general public are then gathered to produce ratings. This dataset contains a list of 168 NYC restaurants and their Zagat Ratings.
+
+```{r}
+### IMPORT THE DATA
+### NYC RESTAURANT RATINGS
+#install.packages("openintro")
+library(openintro)
+
+data("nyc")
+
+head(nyc)
+str(nyc)
+#dim(nyc)
+```
+
+### B. Visualize 
+
+Create a pairs plot to compare all two way relationships. 
+
+```{r}
+### PAIRS PLOT
+library(tidyverse)
+
+## INSERT CODE HERE ##
+```
+
+
+### C. Response Vector
+
+Create a response vector. 
+
+```{r}
+### RESPONSE VECTOR
+## INSERT CODE HERE ##
+```
+
+### D. Design Matrix
+
+The design matrix always has a column of one's to start, followed by the explanatory variables. 
+
+```{r}
+### DESIGN MATRIX
+## INSERT CODE HERE ##
+```
+
+### E. Transpose
+
+The transpose of a matrix swaps the rows and columns. 
+
+```{r}
+### TRANSPOSE
+## INSERT CODE HERE ##
+```
+
+
+### F. Matrix Multiplication 
+
+We use the `%*%` to get the dot product of matrices. 
+
+```{r}
+### MATRIX MULTIPLICATION
+## INSERT CODE HERE ##
+```
+
+### G. Matrix Inverse
+
+The inverse of a matrix is given by `solve`. 
+
+Note: We need a square matrix. 
+
+```{r}
+### INVERT
+## INSERT CODE HERE ##
+```
+
+Check our work: 
+
+```{r}
+### CHECK FOR IDENTITY
+## INSERT CODE HERE ##
+```
+
+### H. Estimate Vector
+
+```{r}
+### BRING C THROUGH E TOGETHER
+## INSERT CODE HERE ##
+```
+
+### I. CHECK
+
+```{r}
+### FIT MOD
+## INSERT CODE HERE ##
+```
+
