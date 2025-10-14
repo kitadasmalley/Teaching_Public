@@ -15,7 +15,8 @@ output:
 
 Students will learn how to ...
 
-* Construct diagnostic plots to explore model assumptions using residuals
+* Compute linear algebra properties in R
+* Extend the linear model to high dimensions
   
 
 
