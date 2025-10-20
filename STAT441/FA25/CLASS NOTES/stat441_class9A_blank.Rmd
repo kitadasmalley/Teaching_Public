@@ -1,0 +1,124 @@
+---
+title: 'STAT 441: Multiple Linear Regression in R'
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '5'
+  html_document:
+    toc: true
+    collapsed: false
+    toc_float: true
+    toc_depth: 5
+---
+
+### Learning Objectives 
+
+Students will learn how to ...
+
+* Visualize an MLR model in three dimenions
+* Construct the "Hat" matrix
+* Illustrate properties of the "Hat" matrix
+
+
+### CODING TOGETHER 
+
+#### A. Import the Data 
+
+These data are from the textbook "Introduction to Linear Regression Analysis (3rd ed)", by Montgomery, Peck and Vining.
+
+
+**Motivation**: A soft drink bottler is analyzing the vending machine service routes in his distribution system.  He is interested in predicting the amount of time required by the route driver to service the vending machines in an outlet.  This service activity includes stocking the machine with beverage products and minor maintenance or housekeeping.  The industrial engineer responsible for the study suggested that the two most important variables affecting the delivery time (Y) are the number of cases of product stocked (x1) and the distance walked by the route driver  (x2) .  The engineer collected 25 observations on delivery time. 
+
+```{r}
+## LOAD THE TEXTBOOK PACKAGE
+#install.packages("MPV")
+library(MPV)
+
+data("softdrink")
+
+str(softdrink)
+```
+Variables: 
+* $Y$: Delivery Time
+* $x_1$: Number of cases of product stocked
+* $x_2$: Distanced walked by the route driver. 
+
+#### B. Rename Variables
+
+```{r}
+### RENAME VARIABLES SO THEY ARE EASIER TO WORK WITH
+library(tidyverse)
+
+softdrink<-softdrink%>%
+  rename(delTime=y, 
+         numCases=x1, 
+         distance=x2)
+
+str(softdrink)
+```
+
+
+#### C. Visualize 
+
+Install the package to create a 3D scatterplot.
+
+```{r}
+## INSTALL PACKAGES
+#install.packages("scatterplot3d")
+library(scatterplot3d)
+
+sp3d<-scatterplot3d(x=softdrink$numCases, 
+                    y=softdrink$distance, 
+                    z=softdrink$delTime, pch=16, angle =30)
+
+```
+
+#### D. Fit the Model
+
+The model for two explanatory variables: 
+
+$$Y_i=\beta_0+\beta_1x_{i1}+\beta_2x_{i2}+\varepsilon_i$$
+
+```{r}
+## USE LM
+
+```
+
+
+#### E. Plot the fitted plane on the 3D scatter plot
+
+```{r}
+### 3D Scatter Plot
+```
+
+### CODING IN SMALL GROUPS 
+
+#### F. Define the hat matrix in R
+
+In order to do this you will first need to define the design matrix
+
+```{r}
+### HAT MATRIX
+### BUT FIRST...
+
+### DESIGN MATRIX
+
+```
+
+
+#### G. Verify
+
+Verify that the hat matrix H satisfies H(I-H)=0 (ie H and I-H are orthogonal)
+
+```{r}
+# Do with group
+# HINT: Define a n by n identity matrix
+# TRY USING diag(n)
+
+
+
+```
+
+
+
+
