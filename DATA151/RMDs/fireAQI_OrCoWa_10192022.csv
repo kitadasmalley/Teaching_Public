@@ -1,0 +1,111 @@
+State,City,AQI,Level
+Oregon,Albany,117,USG
+Oregon,Applegate Valley,NA,NA
+Oregon,Ashland,35,Good
+Oregon,Baker City,79,Moderate
+Oregon,Beaverton,165,Unhealthy
+Oregon,Bend and Redmond,33,Good
+Oregon,Brookings,67,Moderate
+Oregon,Burns,16,Good
+Oregon,Cave Junction,39,Good
+Oregon,Chiloquin,15,Good
+Oregon,Clackamas,158,Unhealthy
+Oregon,Coos,157,Unhealthy
+Oregon,Cottage Grove,84,Moderate
+Oregon,Crater Lake,13,Good
+Oregon,Dallas,144,USG
+Oregon,Enterprise,24,Good
+Oregon,Estacada,89,Moderate
+Oregon,Eugene,96,Moderate
+Oregon,Florence,63,Moderate
+Oregon,Grants Pass,40,Good
+Oregon,Hermiston,69,Moderate
+Oregon,Hillsboro,173,Unhealthy
+Oregon,Hood River,49,Good
+Oregon,John Day,23,Good
+Oregon,Klamath Falls,27,Good
+Oregon,La Grande,115,USG
+Oregon,La Pine,24,Good
+Oregon,Lakeview,24,Good
+Oregon,Lyons,104,USG
+Oregon,Madras,43,Good
+Oregon,Medford,45,Good
+Oregon,Multorpor,NA,NA
+Oregon,North Santiam Canyon,92,Moderate
+Oregon,Oakridge,245,Very Unhealthy
+Oregon,Ontario,45,Good
+Oregon,Pendleton,62,Moderate
+Oregon,Portland,173,Unhealthy
+Oregon,Prineville,29,Good
+Oregon,Roseburg,175,Unhealthy
+Oregon,Salem,157,Unhealthy
+Oregon,Sauvie Island,174,Unhealthy
+Oregon,Shady Cove,36,Good
+Oregon,Sisters,42,Good
+Oregon,Sweet Home,91,Moderate
+Oregon,Dalles,52,Moderate
+Oregon,Tillamook,NA,NA
+Oregon,Toledo,62,Moderate
+Colorado,Aspen,33,Good
+Colorado,Colorado River Valley,19,Good
+Colorado,Colorado Springs,39,Good
+Colorado,Denver-Boulder,49,Good
+Colorado,Fort Collins,33,Good
+Colorado,Four Corners,38,Good
+Colorado,Grand Junction,36,Good
+Colorado,Greeley,34,Good
+Colorado,Mesa Verde,38,Good
+Colorado,Rocky Mountain National Park,35,Good
+Colorado,South Ute Indian Reserve,38,Good
+Washington,Aberdeen,21,Good
+Washington,Anacortes,179,Unhealthy
+Washington,Bellingham,166,Unhealthy
+Washington,Bremerton,169,Unhealthy
+Washington,Cascade foothills of King County,220,Very Unhealthy
+Washington,Cascade foothills of east King,187,Unhealthy
+Washington,Cheeka Peak,30,Good
+Washington,Chehalis,266,Very Unhealthy
+Washington,Chelan,84,Moderate
+Washington,Clarkston,74,Moderate
+Washington,Colville,82,Moderate
+Washington,Confederated Tribes and Bands of Yakama Nations,71,Moderate
+Washington,Custer,138,USG
+Washington,Darrington,359,Hazardous
+Washington,Dayton,76,Moderate
+Washington,Ellensburg,63,Moderate
+Washington,Everett,211,Very Unhealthy
+Washington,Kennewick,69,Moderate
+Washington,Lacrosse,62,Moderate
+Washington,Leavenworth,190,Unhealthy
+Washington,Longview,162,Unhealthy
+Washington,Maka Indian Tribe,30,Good
+Washington,Maple Falls,188,Unhealthy
+Washington,Mesa,71,Moderate
+Washington,Moses Lake,75,Moderate
+Washington,Mount Vernon,170,Unhealthy
+Washington,Mt Rainier,37,Good
+Washington,Oak Harbor,170,Unhealthy
+Washington,Olympia,181,Unhealthy
+Washington,Omak,76,Moderate
+Washington,Pomeroy,57,Moderate
+Washington,Port Angeles,57,Moderate
+Washington,Port Townsend,NA,NA
+Washington,Pullman,62,Moderate
+Washington,Quincy,93,Moderate
+Washington,Raymond,57,Moderate
+Washington,Ritzville,66,Moderate
+Washington,Rosalia,63,Moderate
+Washington,Seattle,251,Very Unhealthy
+Washington,Shelton,154,Unhealthy
+Washington,Spokane,109,USG
+Washington,Spokane Reservation,72,Moderate
+Washington,Sunnyside,107,USG
+Washington,Tacoma,194,Unhealthy
+Washington,Taholah,15,Good
+Washington,Twisp,76,Moderate
+Washington,Vancouver,158,Unhealthy
+Washington,Walla Walla,84,Moderate
+Washington,Wanatchee,174,Unhealthy
+Washington,Winthrop,77,Moderate
+Washington,Yacolt,97,Moderate
+Washington,Yakima,68,Moderate
