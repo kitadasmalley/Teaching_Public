@@ -1,0 +1,337 @@
+---
+title: 'STAT 441: Foundations of MLR Inference'
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '5'
+  html_document:
+    toc: true
+    collapsed: false
+    toc_float: true
+    toc_depth: 5
+---
+
+### Learning Objectives 
+
+Students will learn how to ...
+
+* Compute sum of squares using quadratic forms
+* Extend ANOVA for MLR
+* Perform an overall F-test
+
+### CODING TOGETHER 
+
+#### A. Import the Data 
+
+These data are from the textbook "Introduction to Linear Regression Analysis (3rd ed)", by Montgomery, Peck and Vining.
+
+
+**Motivation**: A soft drink bottler is analyzing the vending machine service routes in his distribution system.  He is interested in predicting the amount of time required by the route driver to service the vending machines in an outlet.  This service activity includes stocking the machine with beverage products and minor maintenance or housekeeping.  The industrial engineer responsible for the study suggested that the two most important variables affecting the delivery time (Y) are the number of cases of product stocked (x1) and the distance walked by the route driver  (x2) .  The engineer collected 25 observations on delivery time. 
+
+```{r}
+## LOAD THE TEXTBOOK PACKAGE
+#install.packages("MPV")
+library(MPV)
+
+data("softdrink")
+
+str(softdrink)
+```
+Variables: 
+* $Y$: Delivery Time
+* $x_1$: Number of cases of product stocked
+* $x_2$: Distanced walked by the route driver. 
+
+#### B. Rename Variables
+
+```{r warning=FALSE, message=FALSE}
+### RENAME VARIABLES SO THEY ARE EASIER TO WORK WITH
+library(tidyverse)
+
+softdrink<-softdrink%>%
+  rename(delTime=y, 
+         numCases=x1, 
+         distance=x2)
+
+str(softdrink)
+```
+
+#### C. Fit the Model
+
+The model for two explanatory variables: 
+
+$$Y_i=\beta_0+\beta_1x_{i1}+\beta_2x_{i2}+\varepsilon_i$$
+```{r}
+## USE LM
+mod <- lm(delTime~numCases+distance, data=softdrink)
+
+summary(mod)
+```
+
+#### D. ANOVA
+
+```{r}
+## ANOVA
+anova(mod)
+```
+
+### INGREDIENTS
+
+#### E. Response Vector
+
+```{r}
+## SAMPLE SIZE
+n<-length(softdrink$delTime)
+n
+
+## RESPONSE VEC
+Y<-matrix(softdrink$delTime, nrow=n)
+dim(Y)
+```
+
+
+#### F. Design Matrix
+
+First need to define the design matrix
+
+```{r}
+### PREDICTORS 
+p<-2
+
+### DESIGN MATRIX
+X<-matrix(c(rep(1, dim(softdrink)[1]), 
+            softdrink$numCases, 
+            softdrink$distance),
+          nrow=dim(softdrink)[1])
+
+dim(X)
+```
+
+#### G. Hat Matrix
+
+The "hat" matrix (projection matrix): 
+$$H=X(X^TX)^{-1}X^T$$
+
+```{r}
+### HAT MATRIX
+
+## INSERT CODE HERE ## 
+```
+
+#### H. Identity Matrix
+
+```{r}
+### IDENTITY
+
+## INSERT CODE HERE ## 
+```
+
+#### I. Vector of Ones
+
+```{r}
+### ONES
+
+## INSERT CODE HERE ## 
+```
+
+#### J. Matrix of Ones
+
+$$\mathbf{J}=\mathbf{1}\mathbf{1}^T$$
+
+```{r}
+### J MATRIX OF ONES
+
+## INSERT CODE HERE ## 
+```
+
+### VERIFY FROM SCRATCH
+
+#### K. Sum of Squared Residuals
+
+$$SS(Residual)=\sum_{i=1}^n(Y_i-\hat{Y}_i)^2=\sum_{i=1}^n e_i^2=\mathbf{e}^T\mathbf{e}=\mathbf{Y}^T(\mathbf{I}-\mathbf{H})\mathbf{Y}$$
+
+```{r}
+### SS RES
+
+## INSERT CODE HERE ## 
+
+## CHECK
+#sum(mod$residuals^2)
+```
+
+
+#### L. Deviations from the mean
+
+Verify that the vector of deviations from the mean can be given by: 
+
+\[
+\begin{bmatrix}
+Y_1-\bar{Y} \\
+Y_2-\bar{Y} \\
+.\\
+.\\
+.\\
+Y_n-\bar{Y}
+\end{bmatrix} = \mathbf{Y}-\mathbf{1}\bar{Y}=
+\mathbf{Y}-\frac{1}{n}\mathbf{1}\mathbf{1}^T\mathbf{Y}= 
+(\mathbf{I}-\frac{1}{n}\mathbf{J})\mathbf{Y}
+\]
+
+```{r}
+### VECTOR OF DEVIATIONS
+## INSERT CODE HERE ## 
+
+
+#sum(devMean)
+
+## CHECK
+#head(softdrink$delTime-mean(softdrink$delTime))
+```
+
+#### M. Sum of Squares Total
+
+$$SS(Total)=\sum_{i=1}^n(Y_i-\bar{Y})^2=\mathbf{Y}^T(\mathbf{I}-\frac{1}{n}\mathbf{J})\mathbf{Y}$$
+
+```{r}
+## SS TOTAL
+## INSERT CODE HERE ## 
+```
+
+#### N. Sum of Squares Regression
+
+$$SS(Regression)=\sum_{i=1}^n(\hat{Y}_i-\bar{Y})^2=\mathbf{Y}^T(\mathbf{H}-\frac{1}{n}\mathbf{J})\mathbf{Y}$$
+
+```{r}
+## SS REG
+## INSERT CODE HERE ## 
+
+## CHECK
+#anova(mod)
+#5382.4+168.4
+```
+
+#### O. R-Squared 
+
+$$R^2=\frac{SS(Reg)}{SS(Tot)}=\frac{\mathbf{Y}^T(\mathbf{H}-\frac{1}{n}\mathbf{J})\mathbf{Y}}{\mathbf{Y}^T(\mathbf{I}-\frac{1}{n}\mathbf{J})\mathbf{Y}}$$
+
+```{r}
+## R SQUARED
+## INSERT CODE HERE ## 
+
+## CHECK
+#summary(mod)$r.squared
+```
+
+#### P. R-Squared Adjusted
+
+The adjusted $R^2$ penalizes for adding more predictors (p) to the model.
+
+$$R^2_{adj}=1-\frac{(1-R^2)(n-1)}{n-p-1}$$
+```{r}
+## R SQUARED ADJ
+## INSERT CODE HERE ## 
+
+## CHECK
+#summary(mod)$adj.r.squared
+```
+
+
+
+#### Q. Degrees of Freedom
+
+Degrees of freedom:
+
+```{r}
+## DEGREES OF FREEDOM
+dfReg<-p
+dfReg
+
+dfRes<-n-p-1
+dfRes
+
+## INSERT CODE HERE ## 
+```
+
+
+#### R.Mean Squares
+
+```{r}
+## MS REG
+## INSERT CODE HERE ## 
+
+## MS RES
+## INSERT CODE HERE ## 
+```
+
+#### S. Overal (Global) Hypothesis Test
+
+When testing for the overall significance of the model we test the following hypotheses: 
+
+$H_0: \beta_1=\beta_2=...=\beta_p=0$ 
+
+$H_A:$ at least one $\beta_j\neq 0$
+
+#### T. F Statistic
+
+The test statistic is given by 
+$$F=\frac{MS(Reg)}{MS(Res)}$$
+```{r}
+## F STAT
+## INSERT CODE HERE ## 
+```
+
+#### U. P-value
+
+The p-value is computed by assessing how much area is above the test statistic for a F distribution with $df_1=df_{Reg}$ and $df_2=df_{Res}$: 
+
+```{r}
+## PVAL
+## INSERT CODE HERE ## 
+
+```
+
+This p-value tells us that the model is significant, but it does not tell us which predictor(s) is/are signficant.  To do that we would beed to perform t-tests for each $beta_j$
+
+#### V. Estimator Vector
+
+RECALL FROM CLASS 9A
+
+```{r}
+## BETA VECTOR
+betaVec<-solve(t(X)%*%X)%*%t(X)%*%Y
+betaVec
+```
+
+#### W. Standard Errors for Estimators
+
+RECALL FROM CLASS 9B
+
+```{r}
+## VARIANCE-COVARIANCE MATRIX
+## INSERT CODE HERE ## 
+
+## CHECK
+#summary(mod)
+```
+
+#### X. T-Test Statistics
+
+$$t=\frac{\hat{\beta}_j}{SE(\hat{\beta}_j)}$$
+
+```{r}
+## TEST STATS
+## INSERT CODE HERE ## 
+```
+
+#### Y. P-values
+
+We compute two sided test for each $\beta_j$
+
+```{r}
+## P-values
+## INSERT CODE HERE ## 
+```
+
+#### Z. Bringing it all together! 
+
+Both predictors, number of cases ($X_1$) and distance walked during delivery ($X_2$) have significant relationships with the time is takes to deilver the soda at an $\alpha=0.05$ level. 
