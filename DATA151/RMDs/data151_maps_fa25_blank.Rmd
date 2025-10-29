@@ -1,0 +1,209 @@
+---
+title: 'DATA 151 BONUS Topic: Maps in R'
+output:
+  pdf_document:
+    toc: yes
+    toc_depth: '5'
+  html_document:
+    collapsed: no
+    toc: yes
+    toc_depth: 5
+    toc_float: yes
+---
+
+### Learning Objectives
+
+In this lesson students will learn how to create
+
+* Choropleths (colored map plots)
+
+
+## Choropleths (Map Plots)
+
+### Part 1: Basics of Maps
+
+#### Step 3: `maps` Package
+
+```{r}
+#install.packages("maps")
+library(maps)
+library(tidyverse)
+
+states<-map_data("state")
+  
+head(states)
+```
+
+Let's investigate the data for Oregon. 
+
+##### Points
+```{r}
+## INSERT CODE HERE ###
+```
+
+These data allow us to play "connect the dots" to draw the shape of the state of Oregon. 
+
+##### Connect the dots
+
+Oh no, what happened? 
+```{r}
+## LINE
+## INSERT CODE HERE ###
+```
+
+We need to tell R what order to connect the dots.
+
+* `geom_path()` connects the observations in the order in which they appear in the data. 
+
+* `geom_line()` connects them in order of the variable on the x axis.
+
+```{r}
+## PATH
+## INSERT CODE HERE ###
+```
+
+##### Filling in the space
+
+We can actually think of geographies as generalized polygons!
+
+```{r}
+## POLYGON
+## INSERT CODE HERE ###
+```
+### Try it! 
+
+Rather than filtering for Oregon, try plotting all the states contained in these data.  Fill the states will your favorite color.  
+```{r}
+## PLOT A MAP OF THE CONTIGUOUS UNITED STATES
+## INSERT CODE HERE ###
+```
+
+
+### Example: National Parks and Biodiversity
+
+Source: These data are hosted on Kaggle from the National Park Service <https://www.kaggle.com/datasets/nationalparkservice/park-biodiversity> and listed as being under public domain.
+
+These data were accessed on Oct 28, 2025. 
+
+#### Step 1: Load the Data for Part 1
+
+For your convenence, I have hosted them on github: 
+
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+
+parks <- read.csv("https://raw.githubusercontent.com/kitadasmalley/Teaching_Public/refs/heads/main/DATA151/NationalParks/parks.csv")
+
+#str(parks)
+```
+
+#### Step 2: Plotting On Top of Maps
+
+ggplot is known at the "layered grammar of graphics".  We can add layers of information on top of graphs that even refer to different datasets. 
+
+```{r}
+### BUBBLE PLOT
+## INSERT CODE HERE ###
+```
+
+#### Step 3: Load the Data for Part 2
+
+The second dataset has information about biodiversity in parks: 
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+
+species <- read.csv("https://raw.githubusercontent.com/kitadasmalley/Teaching_Public/refs/heads/main/DATA151/NationalParks/species.csv")
+
+str(species)
+```
+
+#### Step 4: Join Data Sets
+
+To really harness the power of these datasets, we will have to join them.  
+
+```{r}
+## JOIN THE DATA
+## INSERT CODE HERE ###
+```
+#### Question of Interest
+
+Which state has the most biodiversity in its state parks? 
+
+```{r}
+### BIODIVERSITY 
+## INSERT CODE HERE ###
+
+#View(bioDivState)
+```
+
+What do you observe? 
+
+#### Step 5: State Data
+
+If we want to join the information from the national park data and the mapping data, we'll need to do a little wrangling for states.  
+
+Note that the national park data uses state abbreviations, but the mapping data using the state name (in lower case).  We need to find a way to get these data to talk with eachother.
+
+```{r}
+### STATE DATA BUILT INTO R
+## NAMES
+## INSERT CODE HERE ###
+
+## ABB
+## INSERT CODE HERE ###
+```
+
+Now make a dataframe of this information. 
+
+```{r}
+### STATE DF
+## INSERT CODE HERE ###
+```
+
+Now we can join our data about biodiversity with the map data by using this intermediary.
+
+```{r}
+### JOIN states with bioDivState
+## INSERT CODE HERE ###
+```
+
+#### STEP 6: Coloring the Map
+
+With the data and the map joined, we can color our polygons! 
+
+```{r}
+### CHOROPLETH
+## INSERT CODE HERE ###
+```
+
+What happened to Tennessee (TN)?
+
+#### STEP 6: Changing Color Palette
+
+Viridis is a colorblind friendly color palette that can be used to create accessible heatmaps. 
+
+```{r message=FALSE, warning=FALSE}
+#install.packages("viridis")
+library(viridis)
+
+## INSERT CODE HERE ###
+
+```
+
+#### TRY IT!
+
+Make a choropleth map that shows the number of national parks per state.  
+
+Note: Some national parks are across multiple states.  We do not want to double count these parks. 
+
+```{r}
+### NATIONAL PARKS BY STATE
+## INSERT CODE HERE ###
+
+### JOIN
+## INSERT CODE HERE ###
+
+### MAP
+## INSERT CODE HERE ###
+```
+
