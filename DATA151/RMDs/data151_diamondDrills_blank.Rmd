@@ -1,0 +1,148 @@
+---
+title: 'DATA151: Diamonds Drill'
+author: "Student Name Here"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Diamonds Are Forever
+
+### Load the package
+
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+```
+
+#### Learn about the data
+
+```{r}
+data("diamonds")
+
+## INSERT CODE HERE ##
+```
+
+
+### Question 1
+
+Make a new data set that has the average depth and price of the diamonds in the data set. 
+
+```{r}
+## INSERT CODE HERE ##
+```
+
+### Question 2
+
+Add a new column to the data set that records each diamond's price per carat.
+
+```{r}
+## INSERT CODE HERE ##
+```
+
+### Question 3
+
+Create a new data set that groups diamonds by their cut and displays the average price of each group. 
+
+```{r}
+## INSERT CODE HERE ##
+```
+
+### Question 4
+
+Create a new data set that groups diamonds by color and displays the average depth and average table for each group.
+
+```{r}
+## INSERT CODE HERE ##
+```
+
+### Question 5
+
+Which color diamonds seem to be largest on average (in terms of carats)?
+
+```{r}
+## INSERT CODE HERE ##
+```
+
+### Question 6
+
+What color of diamonds occurs the most frequently among diamonds with ideal cuts?
+
+```{r}
+## INSERT CODE HERE ##
+```
+
+### Question 7
+
+Which clarity of diamonds has the largest average table per carats?
+
+```{r}
+## INSERT CODE HERE ##
+```
+
+### Question 8
+
+What is the average price per carat of diamonds that cost more than $10,000?
+
+```{r}
+## INSERT CODE HERE ##
+```
+
+### Question 9
+
+Of the diamonds that cost more than $10,000 what is the most common clarity?
+
+```{r}
+## INSERT CODE HERE ##
+```
+
+### Question 10
+
+Create a side-by-side bar graph that goes with Question 9.  
+
+TASK/HINTS:
+
+This bar graph should only contain data for diamonds that cost more than $10,000.  The should be a different colored bar for each clarity level.  Bars should be displayed next to each other so that the height of their bars can be compared by the viewer.  Please add a title to the graph that brings attention to the tallest bar.
+
+```{r}
+## INSERT CODE HERE ##
+```
+
+### Question 11
+
+Create a filled bar graph that shows the conditional distribution of clarity, given cut.  What patterns do you observe?
+
+TASK/HINTS:
+
+There should be a bar for each cut type that has subsections of each clarity.  
+
+```{r}
+## INSERT CODE HERE ##
+```
+
+
+### Question 12
+
+Create a faceted density plot, showing the distribution of price for each clarity type.  Describe the shape of the distribution for "I1" quality diamonds. 
+
+TASK/HINTS:
+
+Facets are used to compare across subgroups.  Faceting by row will allow easiest comparison of price distributions across clarity levels.  Don't forget to adjust the scale on the y axis to improve your ability to see the shape of the distributions.  
+
+```{r}
+## INSERT CODE HERE ##
+```
+
+
+### BONUS CHALLENGE
+
+Add two columns to the diamonds data set. The first column should display the average depth of diamonds in the diamond's color group. The second column should display the average table of diamonds in the diamonds color group.
+
+Hint: Use left_join()
+
+```{r}
+## INSERT CODE HERE ##
+```
