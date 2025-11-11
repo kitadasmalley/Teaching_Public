@@ -1,0 +1,126 @@
+---
+title: 'STAT 441: Full and Reduced Models'
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '5'
+  html_document:
+    toc: true
+    collapsed: false
+    toc_float: true
+    toc_depth: 5
+---
+
+### Learning Objectives 
+
+Students will learn how to ...
+
+* Compare full and reduced models using the General Linear Hypothesis
+
+### CODING TOGETHER 
+
+#### A. Import the Data 
+
+These data are from the textbook "Introduction to Linear Regression Analysis (3rd ed)", by Montgomery, Peck and Vining.
+
+
+**Motivation**: A soft drink bottler is analyzing the vending machine service routes in his distribution system.  He is interested in predicting the amount of time required by the route driver to service the vending machines in an outlet.  This service activity includes stocking the machine with beverage products and minor maintenance or housekeeping.  The industrial engineer responsible for the study suggested that the two most important variables affecting the delivery time (Y) are the number of cases of product stocked (x1) and the distance walked by the route driver  (x2) .  The engineer collected 25 observations on delivery time. 
+
+```{r}
+## LOAD THE TEXTBOOK PACKAGE
+#install.packages("MPV")
+library(MPV)
+
+data("softdrink")
+
+str(softdrink)
+```
+Variables: 
+* $Y$: Delivery Time
+* $x_1$: Number of cases of product stocked
+* $x_2$: Distanced walked by the route driver. 
+
+#### B. Rename Variables
+
+```{r}
+### RENAME VARIABLES SO THEY ARE EASIER TO WORK WITH
+library(tidyverse)
+
+softdrink<-softdrink%>%
+  rename(delTime=y, 
+         numCases=x1, 
+         distance=x2)
+
+str(softdrink)
+```
+
+#### C. Fit the FULL Model
+
+The model for two explanatory variables: 
+
+$$Y_i=\beta_0+\beta_1x_{i1}+\beta_2x_{i2}+\varepsilon_i$$
+
+```{r}
+## USE LM
+modFull <- lm(delTime~numCases+distance, data=softdrink)
+
+summary(modFull)
+```
+
+
+#### D. ANOVA FULL
+
+Use the ANOVA function build into R. 
+
+```{r}
+### ANOVA
+## INSERT CODE HERE ##
+```
+
+Observe that there are lines in the table for each explanatory variable. 
+
+Let's define the sum of squares for regression, total, and residuals. 
+
+```{r}
+## SS(TOT)
+## INSERT CODE HERE ##
+
+## SS(RES) FULL
+## INSERT CODE HERE ##
+
+## SS(REG) FULL
+## INSERT CODE HERE ##
+```
+
+#### E. Fit the REDUCED Model
+
+```{r}
+### REDUCED MODEL
+## INSERT CODE HERE ##
+```
+#### F. REDUCED ANOVA
+
+```{r}
+### ANOVA
+## INSERT CODE HERE ##
+```
+#### G. Extra Sum of Squares
+
+Compute the Differences
+```{r}
+## INSERT CODE HERE ##
+```
+
+#### H. F-Test
+```{r}
+### DEFINE Q
+## INSERT CODE HERE ##
+
+## F
+## INSERT CODE HERE ##
+
+## Pval
+## INSERT CODE HERE ##
+```
+
+
