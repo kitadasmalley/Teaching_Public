@@ -1,0 +1,260 @@
+---
+title: 'STAT 441: Variable Selection with Partial F'
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '5'
+  html_document:
+    toc: true
+    collapsed: false
+    toc_float: true
+    toc_depth: 5
+---
+
+### Learning Objectives 
+
+Students will learn how to ...
+
+* Perform Variable Selection
+
+  * Forward Selection 
+  * Backward Selection
+
+
+### Data Package
+
+These data are from the textbook "Introduction to Linear Regression Analysis (3rd ed)", by Montgomery, Peck and Vining.
+
+```{r}
+## LOAD THE TEXTBOOK PACKAGE
+#install.packages("MPV")
+library(MPV)
+```
+
+### EXAMPLE: Hald Cement Data
+
+**Motivation**:
+
+Hald [1952] presented a dataset concerning the heat involved in calories per gram of cement ($y$) as a function of the amount of each of the following four ingredients in the mixture:
+
+* $x_1$: tricalcium aluminate
+* $x_2$: tricalcium silicate
+* $x_3$: tetracalcium alumino ferrite
+* $x_4$: dicalcium silicate
+
+#### A. Import Data
+
+```{r}
+## HALD CEMENT
+data("cement")
+
+str(cement)
+```
+
+## Visualize
+
+```{r}
+library(GGally)
+library(tidyverse)
+
+ggpairs(cement)
+```
+
+
+
+## Variable Selection 
+
+In variable selection, there are $2^p$ possible sets of variables to consider for the model.  This can get large fast!  By performing forward or backward selection, this can greatly reduce the set of models to consider.  
+
+### Forward Selection 
+
+#### Step 0: Start with a null (empty model)
+
+#### Step 1: One variable models
+
+```{r}
+n=dim(cement)[1]
+alpha=0.15
+
+# Look at models with one variable 
+## INSERT CODE HERE ##
+
+# Find the F_in cut-off
+## INSERT CODE HERE ##
+
+```
+
+##### Consider ($x_1$) tricalcium aluminate
+
+```{r}
+## A: x1: tricalcium aluminate
+## INSERT CODE HERE ##
+
+```
+
+##### Consider ($x_2$) tricalcium silicate
+
+```{r}
+## B: x2: tricalcium silicate
+## INSERT CODE HERE ##
+
+```
+
+##### Consider ($x_3$)  tetracalcium alumino ferrit
+
+```{r}
+## C: x3: tetracalcium alumino ferrite
+## INSERT CODE HERE ##
+
+```
+
+##### Consider ($x_4$)  dicalcium silicate
+
+```{r}
+## D: x4: dicalcium silicate
+## INSERT CODE HERE ##
+```
+
+Dicalcium silicate ENTERS THE MODEL!
+
+#### Step 2: Two variable models
+
+```{r}
+# NOW LOOK AT TWO VARIABLE MODELS
+## INSERT CODE HERE ##
+
+# F_in 
+## INSERT CODE HERE ##
+```
+
+##### Consider ($x_1$) tricalcium aluminate with $x_4$
+
+```{r}
+## A: x1: tricalcium aluminate
+## INSERT CODE HERE ##
+
+```
+
+##### Consider ($x_2$) tricalcium silicate with $x_4$
+
+```{r}
+## B: x2: tricalcium silicate
+## INSERT CODE HERE ##
+```
+
+##### Consider ($x_3$)  tetracalcium alumino ferrit with $x_4$
+
+```{r}
+## C: x3: tetracalcium alumino ferrite
+## INSERT CODE HERE ##
+
+```
+
+Tricalcium aluminate ENTERS THE MODEL
+
+#### Step 3: Three variable models
+
+```{r}
+# NOW LOOK AT THREE VARIABLE MODELS
+## INSERT CODE HERE ##
+
+# F_in 
+## INSERT CODE HERE ##
+```
+
+##### Consider ($x_2$) tricalcium silicate with $x_4$ and  $x_1$ 
+
+```{r}
+## B: x2: tricalcium silicate
+## INSERT CODE HERE ##
+```
+
+##### Consider ($x_3$)  tetracalcium alumino ferrit with $x_4$ and  $x_1$ 
+
+```{r}
+## C: x3: tetracalcium alumino ferrite
+## INSERT CODE HERE ##
+
+```
+
+Tricalcium silicate ENTERS THE MODEL!
+
+#### Step 4: Four variable models 
+
+```{r}
+## INSERT CODE HERE ##
+
+# F_in 
+## INSERT CODE HERE ##
+```
+
+##### Consider ($x_3$)  tetracalcium alumino ferrit with $x_4$, $x_1$, and $x_2$
+
+```{r}
+## C: x3: tetracalcium alumino ferrite
+## INSERT CODE HERE ##
+```
+
+Tetracalcium alumino ferrite IS NOT SIGNIFICANT
+
+#### Step 5: Report the final model 
+
+Our final model for calories per gram of cement ($Y$) is with dicalcium silicate, tricalcium aluminate, tricalcium silicate
+
+### Backward Elimination 
+
+#### Step 1: Start with the saturated/full model
+
+```{r}
+## STEP 1: NOW LOOK AT SATURATED MODEL
+## INSERT CODE HERE ##
+# F_in 
+## INSERT CODE HERE ##
+
+## INSERT CODE HERE ##
+# x3 has the lowerst F-value and its smaller than the threshold
+# take x3 out 
+```
+
+##### Take out $x_3$
+
+#### Step 2: Consider eliminating one variable 
+
+```{r}
+## STEP 2: LOOK AT 3 Variable Model to Remove One
+## INSERT CODE HERE ##
+
+# F_in 
+## INSERT CODE HERE ##
+
+
+## INSERT CODE HERE ##
+
+```
+
+We can stop here because the lowest F-stat is still bigger than the threshold 
+
+### Automate with the `leaps` package
+
+```{r}
+## We can automate with the leaps package
+library(leaps)
+
+# FORWARD STEPWISE SELECTION
+## INSERT CODE HERE ##
+```
+
+
+```{r}
+# BACKWARD STEPWISE SELECTION
+## INSERT CODE HERE ##
+
+# BEST SUBSET
+## INSERT CODE HERE ##
+```
+
+
+
+
+
+
