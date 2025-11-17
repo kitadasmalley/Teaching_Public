@@ -1,6 +1,6 @@
 ---
 title: 'DATA151: Introduction to Regression Models and Subgroups'
-author: "HKS"
+author: "CRAYON CODE NAME"
 output:
   pdf_document:
     toc: yes
