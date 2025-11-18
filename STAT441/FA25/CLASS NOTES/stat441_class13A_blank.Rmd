@@ -1,0 +1,222 @@
+---
+title: 'STAT 441: Multicollinearity'
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '5'
+  html_document:
+    toc: true
+    collapsed: false
+    toc_float: true
+    toc_depth: 5
+---
+
+### Learning Objectives 
+
+Students will learn how to ...
+
+* 
+
+
+### Data Package
+
+These data are from the textbook "Introduction to Linear Regression Analysis (3rd ed)", by Montgomery, Peck and Vining.
+
+```{r}
+## LOAD THE TEXTBOOK PACKAGE
+#install.packages("MPV")
+library(MPV)
+```
+
+### EXAMPLE: Hald Cement Data
+
+**Motivation**:
+
+Hald [1952] presented a dataset concerning the heat involved in calories per gram of cement ($y$) as a function of the amount of each of the following four ingredients in the mixture:
+
+* $x_1$: tricalcium aluminate
+* $x_2$: tricalcium silicate
+* $x_3$: tetracalcium alumino ferrite
+* $x_4$: dicalcium silicate
+
+#### A. Import Data
+
+```{r}
+## HALD CEMENT
+data("cement")
+
+str(cement)
+```
+
+## Visualize
+
+```{r}
+library(GGally)
+library(tidyverse)
+
+ggpairs(cement)
+```
+
+
+
+### Example: Inference Inconsistency 
+
+#### STEP 1: Fit Model 1
+
+Fit a model with x2.
+
+```{r}
+## FIT A MODEL WITH X2
+## INSERT CODE HERE ##
+```
+
+#### STEP 2: Fit Model 2
+
+Fit a model with x4.
+
+```{r}
+## FIT A MODEL WITH X4
+## INSERT CODE HERE ##
+```
+
+
+#### STEP 3: Fit Model 3
+
+Fit a model with x2 and x4.
+
+```{r}
+## FIT A MODEL WITH X2 and X4
+
+## INSERT CODE HERE ##
+
+```
+
+
+#### STEP 4: Look at the Extra Sum of Squares and Partial F-test in the ANOVA
+
+Basic R ANOVA output: 
+
+```{r}
+## ANOVA
+## INSERT CODE HERE ##
+```
+
+
+#### STEP 5: Compute Overall F-test
+
+Combine parts from the ANOVA output: 
+
+```{r}
+# Sum of Squares
+## INSERT CODE HERE ##
+
+# Degrees of freedom
+## INSERT CODE HERE ##
+
+# F-test Statistic
+## INSERT CODE HERE ##
+
+# P-value
+## INSERT CODE HERE ##
+```
+
+### Correlation Matrix
+
+Create a correlation matrix for the X's. 
+
+```{r}
+## CORR
+## INSERT CODE HERE ##
+```
+
+
+### Variance Inflation
+
+#### STEP 1: Fit Models for the X's 
+
+Fit a model for X1 as the response and use the other explanatory variables as predictors. 
+
+```{r}
+## X1 is response
+## INSERT CODE HERE ##
+```
+
+#### STEP 2: R-squared
+
+Compute the R-squared value
+
+```{r}
+## R-squared
+# Find the R-squared for each explanatory 
+## INSERT CODE HERE ##
+```
+
+#### STEP 3: Compute Variance Inflation Factor
+
+```{r}
+# Find the VIF
+## INSERT CODE HERE ##
+```
+
+#### STEP 4: Use a Package
+
+```{r}
+#install.packages("car")
+library(car)
+## INSERT CODE HERE ##
+```
+
+#### It can be shown... 
+
+We can also compute the VIF from scratch using the standardized design matrix. 
+
+```{r}
+### FROM SCRATCH
+n<-dim(cement)[1]
+X_No1<-matrix(data=c(cement$x1, 
+                 cement$x2, 
+                 cement$x3, 
+                 cement$x4), nrow=n)
+
+## CENTERED AND SCALED 
+Z<-scale(X_No1, center=TRUE, scale=TRUE)
+
+## INVERSE
+invZtZ<-solve(t(Z)%*%Z)
+
+## MATRIX
+(n-1)*invZtZ
+
+## VIF VEC
+diag((n-1)*invZtZ)
+```
+
+### Eigenvalues 
+
+We can also assess multicolinarity using eigenvalues, which feels like magic! 
+```{r}
+# Design matrix
+xMat<-matrix(data=c(rep(1, n), 
+                    cement$x1, 
+                    cement$x2, 
+                    cement$x3, 
+                    cement$x4), 
+             nrow=n)
+
+# Eigenvalues
+ev<-eigen(t(xMat)%*%xMat)
+ev
+
+# Condition number 
+lamda_max<-max(ev$values)
+lamda_min<-min(ev$values)
+kappa<-lamda_max/lamda_min
+kappa
+
+# Condition indices
+kappa_j<-lamda_max/ev$values
+kappa_j
+sum(kappa_j>1000)
+
+```
+
